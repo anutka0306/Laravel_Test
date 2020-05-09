@@ -1,5 +1,7 @@
 <?php
-
+use App\Category;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,5 +14,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+
+Route::get('/categories',function (){
+    return view('categories');
+})->name('Categories');
