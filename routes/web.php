@@ -18,6 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/categories','CategoryController@index')->name('Categories');
+Route::get('/category/{category}', 'CategoryController@show')->name('Category');
 
 Auth::routes();
 

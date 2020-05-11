@@ -9,17 +9,13 @@
                     <div class="card-header">{{ __('Login') }}</div>
 
                     <div class="card-body">
-                        <h2>CATEGORIES!</h2>
+                        <h2>IMYA CATEGORII</h2>
                         <div class="row">
-                            @foreach ($categories as $category)
-
-                                <div class="col-md-4">
-                                    <a href="#"><h2>{{ $category->name }}</h2></a>
-                                    <a href="#">
-                                        <div class="catalog-item__image" style="background-image:url({{ $category->image }})" alt=""></div>
-                                    </a>
-
-                                </div>
+                            @foreach($tests as $test)
+                               <div class="col-md-3">
+                                   <h3>{{ $test->name }}</h3>
+                                   <small>Min pass: {{ $test->min_pass_point }}</small>
+                               </div>
                             @endforeach
                         </div>
                     </div>
@@ -28,3 +24,4 @@
         </div>
     </div>
 @endsection
+
