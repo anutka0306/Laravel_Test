@@ -24,10 +24,17 @@ class MenuProvider extends ServiceProvider
     public function boot()
     {
         $this->getMenu();
+        $this->getAdminMenu();
     }
     private function getMenu(){
       \View::composer('layouts.main', function ($view){
           $view->with('menu',\view('main_menu'));
       });
+    }
+
+    private function getAdminMenu(){
+        \View::composer('layouts.admin', function ($view){
+           $view->with('admin_menu', \view('admin.admin_menu'));
+        });
     }
 }

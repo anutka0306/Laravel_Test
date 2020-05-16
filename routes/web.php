@@ -20,6 +20,17 @@ Route::get('/', function () {
 Route::get('/categories','CategoryController@index')->name('Categories');
 Route::get('/category/{category}', 'CategoryController@show')->name('Category');
 
+Route::group([
+    'prefix'=>'admin',
+    'namespace'=>'Admin',
+    'as'=>'admin.'
+],
+    function (){
+Route::get('/','HomeController@index')->name('Admin');
+Route::resource('/categories','CategoryController');
+    }
+);
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
