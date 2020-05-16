@@ -13,9 +13,11 @@ class CategoryController extends Controller
         return view('Categories.categories')->with('categories', Category::all());
     }
 
-    public function show($id){
+    public function show($slug){
+        $cat_id = Category::query()->where('slug',$slug)->value('id');
         return view('Categories.category')->with([
-            'tests'=>Test::query()->where('cat',$id)->get(),
+            'tests'=>Test::query()->where('cat',$cat_id)->get(),
+            'category'=>Category::query()->find($cat_id),
         ]);
     }
 }

@@ -9,7 +9,18 @@
                     <div class="card-header">{{ __('Login') }}</div>
 
                     <div class="card-body">
-                        <h2>IMYA CATEGORII</h2>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2>{{ $category->name }}</h2>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="category-label__image" style="background-image:url({{ $category->image }})" alt="{{ $category->name }}"></div>
+                            </div>
+                            <div class="col-md-9">
+                                <p>{{ $category->description }}</p>
+                            </div>
+                        </div>
+
                         <div class="row">
                             @foreach($tests as $test)
                                <div class="col-md-3">

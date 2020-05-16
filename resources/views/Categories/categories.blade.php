@@ -14,7 +14,7 @@
                             @foreach ($categories as $category)
 
                                 <div class="col-md-4">
-                                    <a href="{{ route('Category', $category->id) }}"><h2>{{ $category->name }}</h2></a>
+                                    <a href="{{ route('Category', $category->slug) }}"><h2>{{ $category->name }}</h2></a>
                                     <a href="#">
                                         <div class="catalog-item__image" style="background-image:url({{ $category->image }})" alt=""></div>
                                     </a>
