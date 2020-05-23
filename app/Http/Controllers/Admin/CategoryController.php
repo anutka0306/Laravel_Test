@@ -60,7 +60,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('admin.create_edit_category')->with('category', Category::query()->find($id));
     }
 
     /**
