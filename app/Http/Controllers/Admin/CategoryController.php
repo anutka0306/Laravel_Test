@@ -27,7 +27,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.create_edit_category')->with('category',new Category());
     }
 
     /**
@@ -38,7 +38,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -72,7 +72,9 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $inputData = $request->except(['_token','_method']);
+        Category::query()->where('id',$id)->update($inputData);
+        return view('admin.categories')->with('categories', Category::all());
     }
 
     /**

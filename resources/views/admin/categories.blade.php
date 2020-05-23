@@ -11,6 +11,11 @@
                     <div class="card-body">
 
                         <div class="row">
+                            <div class="col-md-12">
+                            <a href="{{ route("admin.categories.create") }}">
+                                <button class="btn btn-success">Создать категорию</button>
+                            </a>
+                            </div>
                             @foreach ($categories as $category)
 
                                 <div class="col-md-6">

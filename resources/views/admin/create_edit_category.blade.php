@@ -8,8 +8,14 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <form method="POST" enctype="multipart/form-data" action="">
+                        <form method="POST" enctype="multipart/form-data" action="
+@if(!$category->id){{ route("admin.categories.store") }}
+                        @else {{ route("admin.categories.update", $category->id) }}
+                        @endif">
                             @csrf
+                           @if($category->id)
+                               @method('PATCH')
+                            @endif
 
                             <div class="form-group">
                                 <label for="catTitle">Название категории</label>
