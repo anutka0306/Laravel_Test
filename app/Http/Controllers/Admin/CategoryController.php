@@ -38,7 +38,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $inputData = $request->except(['_token']);
+        Category::query()->insert($inputData);
+        return view('admin.categories')->with('categories',Category::all());
     }
 
     /**
