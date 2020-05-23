@@ -6,6 +6,8 @@ use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class CategoryController extends Controller
 {
@@ -33,12 +35,22 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
+
+            $this->validate($request, Category::rules(), [], Category::attributeNames());
+
         $inputData = $request->except(['_token']);
+        $image_url = null;
+        if($request->file('image')){
+            $path = \Storage::putFile('public/images', $request->file('image'));
+            $image_url = Storage::url($path);
+            $inputData['image'] = $image_url;
+        }
         Category::query()->insert($inputData);
         return view('admin.categories')->with('categories',Category::all());
     }
@@ -68,13 +80,21 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
+     * @throws ValidationException
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, Category::rules(), [], Category::attributeNames());
         $inputData = $request->except(['_token','_method']);
+        $image_url = null;
+        if($request->file('image')){
+            $path = \Storage::putFile('public/images', $request->file('image'));
+            $image_url = Storage::url($path);
+            $inputData['image'] = $image_url;
+        }
         Category::query()->where('id',$id)->update($inputData);
         return view('admin.categories')->with('categories', Category::all());
     }
