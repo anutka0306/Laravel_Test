@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -42,7 +41,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
 
-            $this->validate($request, Category::rules(), [], Category::attributeNames());
+        $this->validate($request, Category::rules_create(), [], Category::attributeNames());
 
         $inputData = $request->except(['_token']);
         $image_url = null;
@@ -87,7 +86,8 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, Category::rules(), [], Category::attributeNames());
+
+        $this->validate($request, Category::rules_update($id), [], Category::attributeNames());
         $inputData = $request->except(['_token','_method']);
         $image_url = null;
         if($request->file('image')){
