@@ -119,6 +119,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Category::query()->where('id',$id)->delete();
+        return view('admin.categories')->with('categories', Category::all());
+
     }
 }

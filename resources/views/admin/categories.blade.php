@@ -28,7 +28,11 @@
                                         <button class="btn btn-info">Редактировать</button>
                                     </a>
                                     <a href="#">
-                                        <button class="btn btn-danger">Удалить</button>
+                                        <form method="post" action="{{ route('admin.categories.destroy', $category->id) }}" style="display: inline">
+                                        <button type="submit" class="btn btn-danger">Удалить</button>
+                                        @csrf
+                                        @method('DELETE')
+                                        </form>
                                     </a>
                                 </div>
                             @endforeach
