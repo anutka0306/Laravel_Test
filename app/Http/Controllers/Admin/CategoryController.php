@@ -12,6 +12,15 @@ class CategoryController extends Controller
 {
 
     /**
+     * Check if id exists
+     * @param $id int
+     * @return object|null
+     */
+    private function checkId(int $id){
+        return Category::query()->find($id);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -73,6 +82,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
+        if(!$this->checkId($id)){
+            abort('404');
+        }
         return view('admin.create_edit_category')->with('category', Category::query()->find($id));
     }
 

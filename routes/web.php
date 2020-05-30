@@ -27,7 +27,7 @@ Route::group([
 ],
     function (){
 Route::get('/','HomeController@index')->name('Admin');
-Route::resource('/categories','CategoryController');
+Route::resource('/categories','CategoryController')->except('show');
     }
 );
 

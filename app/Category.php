@@ -21,7 +21,7 @@ class Category extends Model
     public static function rules_update($id){
 
         return[
-            'name'=>'required|min:3',
+            'name'=>['required','min:3', Rule::unique('categories')->ignore($id)],
             'slug'=>['required','min:3',Rule::unique('categories')->ignore($id)],
             'image'=>'mimes:jpeg,png,jpg|max:1000',
         ];

@@ -17,7 +17,7 @@
                                 <div class="category-label__image" style="background-image:url({{ $category->image }})" alt="{{ $category->name }}"></div>
                             </div>
                             <div class="col-md-9">
-                                <p>{{ $category->description }}</p>
+                                <p>{!! $category->description !!}</p>
                             </div>
                         </div>
 
