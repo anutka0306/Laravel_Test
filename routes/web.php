@@ -20,6 +20,7 @@ Route::get('/', function () {
 Route::get('/categories','CategoryController@index')->name('Categories');
 Route::get('/category/{category}', 'CategoryController@show')->name('Category');
 
+
 Route::group([
     'prefix'=>'admin',
     'namespace'=>'Admin',
@@ -28,6 +29,7 @@ Route::group([
     function (){
 Route::get('/','HomeController@index')->name('Admin');
 Route::resource('/categories','CategoryController')->except('show');
+Route::resource('/tests', 'TestController')->except('show');
     }
 );
 
