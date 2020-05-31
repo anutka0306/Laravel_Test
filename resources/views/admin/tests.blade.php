@@ -18,11 +18,19 @@
                             </div>
                             @foreach ($tests as $test)
 
-                                <div class="col-md-6">
+
+                                <div class="col-md-4">
                                     <div class="catalog-item__image_thumb" style="background-image:url({{ $test->image }})" alt=""></div>
                                     <a href="#"><h2>{{ $test->name }}</h2></a>
 
                                 </div>
+                            <div class="col-md-2">
+                                @if (array_key_exists($test->cat, $category->toArray()))
+                                {{ $category[$test->cat] }}
+                                @else
+                                    Без категории
+                                @endif
+                            </div>
                                 <div class="col-md-6">
                                     <a href="#">
                                         <button class="btn btn-info">Редактировать</button>

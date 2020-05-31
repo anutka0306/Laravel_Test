@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Category;
 use App\Test;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,10 @@ class TestController extends Controller
      */
     public function index()
     {
-        return view('admin.tests')->with('tests', Test::all());
+        return view('admin.tests')->with([
+            'tests'=> Test::all(),
+            'category'=> Category::query()->pluck('name','id'),
+        ]);
     }
 
     /**
