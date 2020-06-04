@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Route::get('/categories','CategoryController@index')->name('Categories');
 Route::get('/category/{category}', 'CategoryController@show')->name('Category');
+Route::get('/test/{test}', 'TestController@show')->name('Test');
 
 
 Route::group([

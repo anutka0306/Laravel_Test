@@ -32,7 +32,7 @@
                                 @endif
                             </div>
                                 <div class="col-md-6">
-                                    <a href="#">
+                                    <a href="{{ route('admin.tests.edit', $test->id) }}">
                                         <button class="btn btn-info">Редактировать</button>
                                     </a>
                                     <a href="#">

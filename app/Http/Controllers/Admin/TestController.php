@@ -64,7 +64,11 @@ class TestController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('admin.create_edit_test')->with([
+          'test'=> Test::query()->find($id),
+          'cats'=> Category::query()->select(['id','name'])->get(),
+            'questions'=> Test::find($id)->questions,
+        ]);
     }
 
     /**
