@@ -65,6 +65,14 @@ class TestController extends Controller
      */
     public function edit($id)
     {
+        $answers = [];
+        $questionIds = Question::query()->where('test_id', $id)->get('id')->toArray();
+        foreach ($questionIds as $questionId){
+
+            $answers[] = Question::find($questionId['id'])->answers->toArray();
+        }
+        dd($answers);
+        dd(Question::find(1)->answers);
         return view('admin.create_edit_test')->with([
           'test'=> Test::query()->find($id),
           'cats'=> Category::query()->select(['id','name'])->get(),
