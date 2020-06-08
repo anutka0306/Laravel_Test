@@ -38,7 +38,7 @@
                                         @endforeach
                                     </div>
                                 @endif
-                                <select class="custom-select">
+                                <select class="custom-select" name="cat">
                                     @foreach($cats as $cat)
 
                                        <option @if($test->cat == $cat->id)
@@ -93,9 +93,9 @@
 
                             <h3>Вопросы</h3>
                             <div class="form-group">
-                                @php($i = 1)
+                                @php($i = 0)
                                 @foreach($questions as $question)
-                                <label for="testTitle">Вопрос {{ $i++ }}</label>
+                                <label for="testTitle">Вопрос {{ ++$i }}</label>
                                 @if($errors->has('question'))
                                     <div class="alert alert-danger">
                                         @foreach($errors->get('question') as $error)
@@ -103,7 +103,8 @@
                                         @endforeach
                                     </div>
                                 @endif
-                                <input name="question" type="text" class="form-control" id="testQuestion" value="{{ $question->question ?? old('question') }}">
+                                <input name="questionIds[]" type="hidden" value="{{ $question->id }}">
+                                <input name="questions[]" type="text" class="form-control" id="testQuestion_{{$i}}" value="{{ $question->question ?? old('question') }}">
                                 @endforeach
                             </div>
 

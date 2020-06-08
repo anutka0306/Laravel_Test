@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use App\Test;
+use App\Question;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -68,6 +69,7 @@ class TestController extends Controller
           'test'=> Test::query()->find($id),
           'cats'=> Category::query()->select(['id','name'])->get(),
             'questions'=> Test::find($id)->questions,
+
         ]);
     }
 
@@ -80,7 +82,25 @@ class TestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+       $inputData = $request->except('_token','_method','questionIds','questions');
+       $questions = array_combine($request->questionIds, $request->questions);
+        $image_url = null;
+        if($request->file('image')){
+            $path = \Storage::putFile('public/images', $request->file('image'));
+            $image_url = Storage::url($path);
+            $inputData['image'] = $image_url;
+        }
+        Test::query()->where('id', $id)->update($inputData);
+        foreach ($questions as $question){
+            Question::query()->where('id', key($questions))->update(['question'=>$question]);
+            next($questions);
+        }
+       return view('admin.tests')->with([
+           'success'=> 'Тест успешно обновлен',
+           'tests' => Test::all(),
+           'category'=> Category::query()->pluck('name','id'),
+           ]);
     }
 
     /**
