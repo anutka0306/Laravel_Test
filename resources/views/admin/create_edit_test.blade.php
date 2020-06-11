@@ -105,6 +105,20 @@
                                 @endif
                                 <input name="questionIds[]" type="hidden" value="{{ $question->id }}">
                                 <input name="questions[]" type="text" class="form-control" id="testQuestion_{{$i}}" value="{{ $question->question ?? old('question') }}">
+                                    Ответы
+                                    @foreach($answers[$question->id] as $answer)
+
+                                        <input name="answerIds[]" type="hidden" value="{{ $answer['id'] }}">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Ответ & Балл  </span>
+                                            </div>
+                                        <input name="answers[]" type="text" class="form-control" value="{{ $answer['answer'] }}">
+                                        <input name="answerPoints[]" type="number" class="form-control" value="{{ $answer['point'] }}">
+                                        </div>
+
+                                    @endforeach
+
                                 @endforeach
                             </div>
 

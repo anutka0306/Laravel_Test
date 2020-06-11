@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Answer;
 use App\Category;
 use App\Test;
 use App\Question;
@@ -69,14 +70,14 @@ class TestController extends Controller
         $questionIds = Question::query()->where('test_id', $id)->get('id')->toArray();
         foreach ($questionIds as $questionId){
 
-            $answers[] = Question::find($questionId['id'])->answers->toArray();
+            $answers[$questionId['id']] = Question::find($questionId['id'])->answers->toArray();
         }
-        dd($answers);
-        dd(Question::find(1)->answers);
+        //dd($answers);
         return view('admin.create_edit_test')->with([
           'test'=> Test::query()->find($id),
           'cats'=> Category::query()->select(['id','name'])->get(),
             'questions'=> Test::find($id)->questions,
+            'answers'=> $answers,
 
         ]);
     }
@@ -91,8 +92,19 @@ class TestController extends Controller
     public function update(Request $request, $id)
     {
 
-       $inputData = $request->except('_token','_method','questionIds','questions');
+       $inputData = $request->except('_token','_method','questionIds','questions', 'answerIds', 'answers', 'answerPoints');
        $questions = array_combine($request->questionIds, $request->questions);
+
+       $answers = [];
+       for($i = 0; $i < count($request->answerIds); $i++){
+        $answers[] = [
+            'id' => $request->answerIds[$i],
+            'answer' => $request->answers[$i],
+            'point' => $request->answerPoints[$i],
+        ];
+       }
+       //dd($answers);
+
         $image_url = null;
         if($request->file('image')){
             $path = \Storage::putFile('public/images', $request->file('image'));
@@ -100,10 +112,19 @@ class TestController extends Controller
             $inputData['image'] = $image_url;
         }
         Test::query()->where('id', $id)->update($inputData);
+
         foreach ($questions as $question){
             Question::query()->where('id', key($questions))->update(['question'=>$question]);
             next($questions);
         }
+
+        foreach ($answers as $answer){
+            Answer::query()->where('id', $answer['id'])->update([
+                'answer' => $answer['answer'],
+                'point' => $answer['point']
+            ]);
+        }
+
        return view('admin.tests')->with([
            'success'=> 'Тест успешно обновлен',
            'tests' => Test::all(),
