@@ -127,6 +127,20 @@
                                         </div>
                                         @endif
                                     @endforeach
+
+                                    <div class="input-group mb-3" id="new-answer__block">
+
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Ответ & Балл  </span>
+                                        </div>
+                                        <input required class="newAnswer" type="text" class="form-control" value="">
+                                        <input required class="newPoints" type="number" class="form-control" value="">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-info" type="button" data-questionid="{{ $question->id }}" onclick="createAnswer(this)">Добавить ответ</button>
+                                        </div>
+
+                                    </div>
+
                                     <hr>
                                 @endforeach
                             </div>
@@ -169,8 +183,26 @@
                         $("#answer_"+id).remove();
                     },
                 });
+        }
 
+        function createAnswer(obj) {
+            let questionId = $(obj).data("questionid");
+            let answer = $(obj).parent().siblings('.newAnswer').val();
+            let points = $(obj).parent().siblings('.newPoints').val();
+            let token = $("meta[name='csrf-token']").attr("content");
 
+            $.ajax({
+                url: "/admin/answers/",
+                type: 'POST',
+                data: {_token: token,
+                    question_id: questionId,
+                    answer: answer,
+                    point: points
+                },
+                success: function (response){
+                    console.log(response);
+                },
+            });
         }
     </script>
 
