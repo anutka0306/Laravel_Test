@@ -91,7 +91,7 @@
                                 @endif
                             </div>
 
-                            <h3>Вопросы</h3>
+                            <h3><strong>Вопросы</strong></h3>
                             <div class="form-group">
                                 @php($i = 0)
                                 @foreach($questions as $question)
@@ -105,26 +105,35 @@
                                 @endif
                                 <input name="questionIds[]" type="hidden" value="{{ $question->id }}">
                                 <input name="questions[]" type="text" class="form-control" id="testQuestion_{{$i}}" value="{{ $question->question ?? old('question') }}">
-                                    Ответы
+                                    <p><strong>Ответы</strong></p>
                                     @foreach($answers[$question->id] as $answer)
 
-                                        <input name="answerIds[]" type="hidden" value="{{ $answer['id'] }}">
-                                        <div class="input-group">
+                                        @if(!empty($answer))
+
+                                        <div class="input-group mb-3" id="answer_{{ $answer['id'] }}">
+                                            <input name="answerIds[]" type="hidden" value="{{ $answer['id'] }}" class="answerId">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Ответ & Балл  </span>
                                             </div>
                                         <input name="answers[]" type="text" class="form-control" value="{{ $answer['answer'] }}">
                                         <input name="answerPoints[]" type="number" class="form-control" value="{{ $answer['point'] }}">
+                                            <div class="input-group-append">
+
+
+                                                    <button class="btn btn-outline-secondary" type="button" data-id="{{ $answer['id'] }}"  onclick="deleteAnswer(this)">X</button>
+
+
+                                            </div>
                                         </div>
-
+                                        @endif
                                     @endforeach
-
+                                    <hr>
                                 @endforeach
                             </div>
 
 
                             <div class="form-group">
-                                <input type="submit" class="btn btn-outline-primary" value="@if($test->id)Изменить @else Добавить @endif категорию"
+                                <input type="submit" class="btn btn-outline-primary" value="@if($test->id)Изменить @else Добавить @endif тест"
                                        id="addTest">
                             </div>
 
@@ -136,6 +145,35 @@
             </div>
         </div>
     </div>
+
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    </script>
+
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        function deleteAnswer(obj) {
+
+                let id = $(obj).data("id");
+                let token = $("meta[name='csrf-token']").attr("content");
+
+                $.ajax({
+                    url: "/admin/answers/"+id,
+                    type: 'DELETE',
+                    data: {_token: token, id: id},
+                    success: function (){
+                        $("#answer_"+id).remove();
+                    },
+                });
+
+
+        }
+    </script>
+
 
     <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
     <script>

@@ -95,15 +95,16 @@ class TestController extends Controller
        $inputData = $request->except('_token','_method','questionIds','questions', 'answerIds', 'answers', 'answerPoints');
        $questions = array_combine($request->questionIds, $request->questions);
 
-       $answers = [];
-       for($i = 0; $i < count($request->answerIds); $i++){
-        $answers[] = [
-            'id' => $request->answerIds[$i],
-            'answer' => $request->answers[$i],
-            'point' => $request->answerPoints[$i],
-        ];
+       if($request->answerIds) {
+           $answers = [];
+           for ($i = 0; $i < count($request->answerIds); $i++) {
+               $answers[] = [
+                   'id' => $request->answerIds[$i],
+                   'answer' => $request->answers[$i],
+                   'point' => $request->answerPoints[$i],
+               ];
+           }
        }
-       //dd($answers);
 
         $image_url = null;
         if($request->file('image')){
@@ -118,11 +119,13 @@ class TestController extends Controller
             next($questions);
         }
 
-        foreach ($answers as $answer){
-            Answer::query()->where('id', $answer['id'])->update([
-                'answer' => $answer['answer'],
-                'point' => $answer['point']
-            ]);
+        if(isset($answers)) {
+            foreach ($answers as $answer) {
+                Answer::query()->where('id', $answer['id'])->update([
+                    'answer' => $answer['answer'],
+                    'point' => $answer['point']
+                ]);
+            }
         }
 
        return view('admin.tests')->with([
