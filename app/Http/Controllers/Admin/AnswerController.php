@@ -40,8 +40,8 @@ class AnswerController extends Controller
     public function store(Request $request)
     {
         $inputData = $request->except('_token');
-        Answer::query()->insert($inputData);
-        return 'my-response';
+        $id = Answer::query()->insertGetId($inputData);
+        return $id;
     }
 
     /**

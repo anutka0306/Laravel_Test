@@ -91,7 +91,7 @@ class TestController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+ //dd($request);
        $inputData = $request->except('_token','_method','questionIds','questions', 'answerIds', 'answers', 'answerPoints');
        $questions = array_combine($request->questionIds, $request->questions);
 

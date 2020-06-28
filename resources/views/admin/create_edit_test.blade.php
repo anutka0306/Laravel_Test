@@ -128,13 +128,13 @@
                                         @endif
                                     @endforeach
 
-                                    <div class="input-group mb-3" id="new-answer__block">
+                                    <div class="input-group mb-3" id="new-answer__block_{{ $question->id }}">
 
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Ответ & Балл  </span>
                                         </div>
-                                        <input required class="newAnswer" type="text" class="form-control" value="">
-                                        <input required class="newPoints" type="number" class="form-control" value="">
+                                        <input class="newAnswer" type="text" class="form-control" value="">
+                                        <input class="newPoints" type="number" class="form-control" value="">
                                         <div class="input-group-append">
                                             <button class="btn btn-info" type="button" data-questionid="{{ $question->id }}" onclick="createAnswer(this)">Добавить ответ</button>
                                         </div>
@@ -200,7 +200,24 @@
                     point: points
                 },
                 success: function (response){
-                    console.log(response);
+                    let lastBlock = $("#new-answer__block_"+questionId);
+                    let newAnswerBlock = "<div class='input-group mb-3' id='answer_"+ response+"'>" +
+                       "<input name='answerIds[]'type='hidden' value='"+response+"' class=\"answerId\">" +
+                        " <div class='input-group-prepend'>" +
+                        " <span class='input-group-text'>Ответ & Балл  </span>" +
+                        " </div>" +
+                        " <input name='answers[]' type='text' class='form-control' value='"+answer+"'>" +
+                        " <input name='answerPoints[]' type='number' class='form-control' value='"+points+"'>" +
+                        " <div class='input-group-append'>" +
+
+                        "<button class='btn btn-outline-secondary' type='button' data-id='{ $answer['id'] }}'  onclick='deleteAnswer(this)'>X</button>" +
+
+                        " </div>" +
+                        " </div>";
+
+                    lastBlock.before(newAnswerBlock);
+                    $("#new-answer__block_"+questionId+" .newAnswer").val('');
+                    $("#new-answer__block_"+questionId+" .newPoints").val('');
                 },
             });
         }
