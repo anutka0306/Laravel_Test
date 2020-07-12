@@ -32,6 +32,7 @@ Route::get('/','HomeController@index')->name('Admin');
 Route::resource('/categories','CategoryController')->except('show');
 Route::resource('/tests', 'TestController')->except('show');
 Route::resource('/answers', 'AnswerController')->only('store','destroy');
+Route::resource('/questions','QuestionController')->only('store','destroy');
     }
 );
 

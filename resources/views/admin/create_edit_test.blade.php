@@ -145,6 +145,21 @@
                                 @endforeach
                             </div>
 
+                            <!-- Add Question -->
+                            <div id="newQuestionBlock">
+                                <label for="testTitle"><strong>Новый вопрос</strong></label>
+                                <div class="input-group mb-2">
+                                    <input id="test-id" type="hidden" value="
+                                        @if(!$test->id)0
+                                            @else {{ $test->id }}
+                                        @endif
+                                        ">
+                                    <input id="newQuestion" type="text" class="form-control" value="">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-danger" type="button" onclick="createNewQuestion(this)">Добавить Вопрос</button>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <input type="submit" class="btn btn-outline-primary" value="@if($test->id)Изменить @else Добавить @endif тест"
@@ -210,7 +225,7 @@
                         " <input name='answerPoints[]' type='number' class='form-control' value='"+points+"'>" +
                         " <div class='input-group-append'>" +
 
-                        "<button class='btn btn-outline-secondary' type='button' data-id='{ $answer['id'] }}'  onclick='deleteAnswer(this)'>X</button>" +
+                        "<button class='btn btn-outline-secondary' type='button' data-id='"+response+"'  onclick='deleteAnswer(this)'>X</button>" +
 
                         " </div>" +
                         " </div>";
@@ -218,6 +233,42 @@
                     lastBlock.before(newAnswerBlock);
                     $("#new-answer__block_"+questionId+" .newAnswer").val('');
                     $("#new-answer__block_"+questionId+" .newPoints").val('');
+                },
+            });
+        }
+
+        function createNewQuestion(obj) {
+            let newQuestion = $(obj).parent().siblings('#newQuestion').val();
+            let testId = $(obj).parent().siblings('#test-id').val();
+            let token = $("meta[name='csrf-token']").attr("content");
+            $.ajax({
+                url: "/admin/questions/",
+                type: 'POST',
+                data: {
+                    _token: token,
+                    question: newQuestion,
+                    test_id: testId,
+                },
+                success:function(response){
+                    let lastBlock = $("#newQuestionBlock");
+                    let newQuestionBlock ="<label for=\"testTitle\">Вопрос "+response+"</label>\n" +
+                        "<input name=\"questionIds[]\" type=\"hidden\" value=\""+response+"\">\n" +
+                        "<input name=\"questions[]\" type=\"text\" class=\"form-control\" id=\"testQuestion_"+response+"\" value=\""+newQuestion+"\">\n" +
+                        "<p><strong>Ответы</strong></p>" +
+                    "<div class=\"input-group mb-3\" id=\"new-answer__block_"+response+"\">\n" +
+                        "\n" +
+                        "<div class=\"input-group-prepend\">\n" +
+                        "<span class=\"input-group-text\">Ответ & Балл  </span>\n" +
+                        " </div>\n" +
+                        "<input class=\"newAnswer\" type=\"text\" class=\"form-control\" value=\"\">\n" +
+                        "<input class=\"newPoints\" type=\"number\" class=\"form-control\" value=\"\">\n" +
+                        "<div class=\"input-group-append\">\n" +
+                        "<button class=\"btn btn-info\" type=\"button\" data-questionid=\""+response+"\" onclick=\"createAnswer(this)\">Добавить ответ</button>\n" +
+                        "</div>\n" +
+                        "\n" +
+                        "</div>";
+                    lastBlock.before(newQuestionBlock);
+                    $("#newQuestion").val('');
                 },
             });
         }
