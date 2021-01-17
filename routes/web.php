@@ -1,5 +1,7 @@
 <?php
-
+use App\Category;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,5 +14,28 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+
+Route::get('/categories','CategoryController@index')->name('Categories');
+Route::get('/category/{category}', 'CategoryController@show')->name('Category');
+Route::get('/test/{test}', 'TestController@show')->name('Test');
+
+
+Route::group([
+    'prefix'=>'admin',
+    'namespace'=>'Admin',
+    'as'=>'admin.'
+],
+    function (){
+Route::get('/','HomeController@index')->name('Admin');
+Route::resource('/categories','CategoryController')->except('show');
+Route::resource('/tests', 'TestController')->except('show');
+Route::resource('/answers', 'AnswerController')->only('store','destroy');
+Route::resource('/questions','QuestionController')->only('store','destroy');
+    }
+);
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
